@@ -1,0 +1,179 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[T2A]{fontenc}			
+\usepackage[utf8]{inputenc}			
+\usepackage[english,russian]{babel}	
+
+\usepackage[
+bookmarks=true, colorlinks=true, unicode=true,
+urlcolor=black,linkcolor=black, anchorcolor=black,
+citecolor=black, menucolor=black, filecolor=black,
+]{hyperref}
+
+\usepackage{color}
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{black}}
+\DeclareCaptionFormat{listing}{\colorbox{white}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} 
+\usepackage{wasysym}
+
+\usepackage{graphicx}
+%\usepackage[cache=false]{minted}
+\usepackage{cmap}
+\usepackage{indentfirst}
+
+\usepackage{listings} 
+\usepackage{fancyvrb}
+
+\usepackage{geometry}
+\geometry{left=2cm}
+\geometry{right=1.5cm}
+\geometry{top=1cm}
+\geometry{bottom=2cm}
+
+\setlength{\parindent}{5ex}
+\setlength{\parskip}{0.5em}
+
+\usepackage{pgfplots}
+\usetikzlibrary{datavisualization}
+\usetikzlibrary{datavisualization.formats.functions}
+
+\begin{document}
+	\lstset{ %
+		language=C,                 % выбор языка для подсветки (здесь это С)
+		basicstyle=\small\sffamily, % размер и начертание шрифта для подсветки кода
+		numbers=left,               % где поставить нумерацию строк (слева\справа)
+		numberstyle=\tiny,           % размер шрифта для номеров строк
+		stepnumber=1,                   % размер шага между двумя номерами строк
+		numbersep=5pt,                % как далеко отстоят номера строк от подсвечиваемого кода
+		backgroundcolor=\color{white}, % цвет фона подсветки - используем \usepackage{color}
+		showspaces=false,            % показывать или нет пробелы специальными отступами
+		showstringspaces=false,      % показывать или нет пробелы в строках
+		showtabs=false,             % показывать или нет табуляцию в строках
+		frame=single,              % рисовать рамку вокруг кода
+		tabsize=2,                 % размер табуляции по умолчанию равен 2 пробелам
+		captionpos=t,              % позиция заголовка вверху [t] или внизу [b] 
+		breaklines=true,           % автоматически переносить строки (да\нет)
+		breakatwhitespace=false, % переносить строки только если есть пробел
+		escapeinside={\%*}{*)}   % если нужно добавить комментарии в коде
+	}
+
+\begin{figure}[h!]
+	\begin{center}
+		{\includegraphics[width = \textwidth]{titul.jpg}}
+	\end{center}
+\end{figure}
+
+%\vspace*{10mm}
+
+\huge
+\begin{center}
+	Лабораторная работа №1
+\end{center}
+
+\vspace*{10mm}
+
+\large
+\begin{center}
+	Тема: <<Приближенный аналитический метод Пикара, сравнение
+	с численными методами>>
+\end{center}
+
+\vspace*{20mm}
+
+\large
+\begin{flushleft}
+	Студент: Левушкин И.К. \\
+	Группа: ИУ7-62Б \\
+	Оценка (баллы): \\
+	Преподаватель: Градов В.М.
+\end{flushleft}
+
+\vspace*{50mm}
+
+\large
+\begin{center}
+	Москва, 2020 г.
+\end{center}
+
+\thispagestyle{empty}
+
+\newpage
+
+%\section*{Условие задачи}
+
+Рассмотрим задачу с начальным условием для дифференциального
+уравнения (задачу Коши):
+	
+\[
+\left\{
+\begin{aligned}
+y'(x) &= f(x, y) \\
+y(\xi) &= \eta \\
+\end{aligned}
+\right.
+\]
+
+Решение можно найти приближенным аналитическим методом Пикара:
+
+\[
+\begin{aligned}
+y^{(n+1)}(x) &= \eta + \int\limits_{\xi}^x f(t, y^{(n)}(t)) dty \\
+y^{(0)}(x) &= \eta \\
+\end{aligned}
+\]
+
+Покажем на конкретном примере:
+
+\[
+\begin{aligned}
+y'(x) &= x^2 + y^2 \\
+y(0) &= 0 \\
+y^{(1)}(x) &= 0 + \int\limits_{0}^x t^2 dty = \frac{t^3}{3} \\
+y^{(2)}(x) &= 0 + \int\limits_{0}^x \bigg[t^2 + \bigg(\frac{t^3}{3}\bigg)^2\bigg] dty = 
+\frac{t^3}{3} + \frac{t^7}{7 \cdot 9} =  \frac{t^3}{3} \bigg[1 + \frac{t^4}{21}\bigg]\\
+y^{(3)}(x) &= 0 + \int\limits_{0}^x \bigg[t^2 + \bigg(
+\frac{t^3}{3} \bigg[1 + \frac{t^4}{21}\bigg]\bigg)^2\bigg] dt = 
+\frac{t^3}{3} + \frac{t^7}{7 \cdot 9} =  \frac{t^3}{3} \bigg[1 + \frac{t^4}{21}\bigg] =\\
+&= \frac{x^3}{3} \bigg[1 + \frac{x^4}{21} +
+\frac{2x^8}{693} + \frac{x^{12}}{19845}\bigg] \\
+\dots
+\end{aligned}
+\]
+
+Чем больше итераций $n$, тем точнее результат.
+
+Кроме того, эту задачу можно решить численными методами. Следующая формула
+для явного способа:
+
+\[
+\begin{aligned}
+y_{n+1} &= y_n + h \cdot f(x_n, y_n) \\
+\end{aligned}
+\]
+
+Похожим образом выглядит неявный метод:
+
+\[
+\begin{aligned}
+y_{n+1} &= y_n + h \cdot f(x_{n+1}, y_{n+1}) \\
+\end{aligned}
+\]
+
+%Здесь $f(x_n, y_n) = x_n^2 + y_n^2$.
+
+Чем меньше шаг $h$, тем точнее значение получим.
+
+Стоит заметить, что для всех рассмотренных методов результат будет тем лучше,
+чем ближе значение $x$ к $\xi$.
+
+Реализованная программа производит расчет для $f(x, y) = x^2 + y^2$.
+Исходя из этого, можно упростить нахождения решения в неявном виде:
+получаем квадратное уравнение и в качестве решения берем меньший
+корень.
+
+
+\end{document}
+

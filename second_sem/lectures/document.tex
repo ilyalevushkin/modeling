@@ -1,0 +1,108 @@
+\documentclass[a4paper,14pt]{extarticle}
+
+\usepackage[T2A]{fontenc}			
+\usepackage[utf8]{inputenc}			
+\usepackage[english,russian]{babel}
+
+\usepackage[
+bookmarks=true, colorlinks=true, unicode=true,
+urlcolor=black,linkcolor=black, anchorcolor=black,
+citecolor=black, menucolor=black, filecolor=black,
+]{hyperref}
+
+\usepackage{color}
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{black}}
+\DeclareCaptionFormat{listing}{\colorbox{white}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} 
+\usepackage{wasysym}
+
+\usepackage{graphicx}
+%\usepackage[cache=false]{minted}
+\usepackage{cmap}
+\usepackage{indentfirst}
+
+\usepackage{longtable}
+
+\usepackage{listings} 
+\usepackage{fancyvrb}
+
+\usepackage{geometry}
+\geometry{left=2cm}
+\geometry{right=1.5cm}
+\geometry{top=1cm}
+\geometry{bottom=2cm}
+
+\setlength{\parindent}{5ex}
+\setlength{\parskip}{0.5em}
+
+\usepackage{color}
+\usepackage[cache=false, newfloat]{minted}
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Листинг}
+ 
+ 
+ \begin{document}
+ 	
+ 	\[v_l \in V, l = 1, n_v\]
+ 	
+ 	\[h_k \in H, k = 1,n_h\]
+ 	
+ 	\[y_j \in Y, j = 1, n_k\]
+ 	
+ 	$\vec{x(t)} = (x_1(t), x_2(t), ..., x_{n_x}(t))$
+ 	
+ 	$\vec{v(t)} = (v_1(t), ..., v_{n_v}(t))$
+
+	$\vec{h(t)} = (h_1(t), ..., h_{n_h}(t))$
+	
+	$\vec{y(t)} = (y_1(t), ..., y_{n_y}(t))$
+ 	
+ 	$\vec{y(t)} = F_s(\vec{x}, \vec{v}, \vec{h}, t)$
+ 	
+ 	$A_s$
+ 	
+ 	$\vec{z(t)} = (z_1(t), ..., z_{n_z}(t))$
+ 	
+ 	$\vec{z(t)} = \phi(\vec{z}, \vec{x}, \vec{v}, \vec{h}, t)$
+ 	
+ 	$\vec{y(t)} = F(\vec{z}, t)$
+ 	
+ 	$\vec{y(t)} = F(\phi(\vec{z}, \vec{x}, \vec{v}, \vec{h}, t))$
+ 	
+ 	\begin{center}
+ 		\begin{longtable}[h!]{|p{0.3\linewidth}|p{0.4\linewidth}|p{ 0.3\linewidth}|}
+ 			\hline
+ 			{Обозначение} & {Процесс функционирования} & {типовая математическая схема}\\
+ 			\hline
+ 			{D} & {Непрерывно-детерменированный подход} & {Дифференциальные уравнения} \\
+ 			\hline
+ 			{F} & {Дискретно-детерменированный} & {Конечные автоматы}\\
+ 			\hline
+ 			{P} & {Дискретно-стохастический} & {Вероятностный автомат}\\
+ 			\hline
+ 			{Q} & {Непрерывно-стохастический} & {Система массового обслуживания}\\
+ 			\hline
+ 			{A} & {Универсальный процесс} & {Агрегативные системы}\\
+ 			\hline
+ 			\end{longtable}
+ 		\end{center}
+ 	
+ 	\[
+ 	L\frac{d^2q(t)}{dt^2} + \frac{q(t)}{C_k} = 0
+ 	\]
+ 	
+ 	
+ 	\[
+ 	M_n l_n^2 \frac{d^2 Q(t)}{dt^2} + M_m g l_m Q(t) = 0
+ 	\]
+ 	
+ 	Уравнения похожи.
+ 	
+ 	$h_2 \frac{d^2 z(t)}{dt^2} + h_1 \frac{dz(t)}{dt} + h_0 z(t) = 0$ - Независимо от природы объекта мы записываем содержательно...
+ 	
+ 	
+ 	
+\end{document}
