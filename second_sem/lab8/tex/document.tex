@@ -1,0 +1,250 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[T2A]{fontenc}			
+\usepackage[utf8]{inputenc}			
+\usepackage[english,russian]{babel}	
+
+\usepackage[
+bookmarks=true, colorlinks=true, unicode=true,
+urlcolor=black,linkcolor=black, anchorcolor=black,
+citecolor=black, menucolor=black, filecolor=black,
+]{hyperref}
+
+\usepackage{color}
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{black}}
+\DeclareCaptionFormat{listing}{\colorbox{white}{\parbox{\textwidth}{#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} 
+\usepackage{wasysym}
+
+\usepackage[cache=false]{minted}
+
+\usepackage{graphicx}
+%\usepackage[cache=false]{minted}
+\usepackage{cmap}
+\usepackage{indentfirst}
+
+\usepackage{listings} 
+\usepackage{fancyvrb}
+
+\usepackage{geometry}
+\geometry{left=2cm}
+\geometry{right=1.5cm}
+\geometry{top=1cm}
+\geometry{bottom=2cm}
+
+\setlength{\parindent}{5ex}
+\setlength{\parskip}{0.5em}
+
+\usepackage{pgfplots}
+
+\usepackage{longtable}
+
+\begin{document}
+	\lstset{ %
+		language=C,                 % выбор языка для подсветки (здесь это С)
+		basicstyle=\small\sffamily, % размер и начертание шрифта для подсветки кода
+		numbers=left,               % где поставить нумерацию строк (слева\справа)
+		numberstyle=\tiny,           % размер шрифта для номеров строк
+		stepnumber=1,                   % размер шага между двумя номерами строк
+		numbersep=5pt,                % как далеко отстоят номера строк от подсвечиваемого кода
+		backgroundcolor=\color{white}, % цвет фона подсветки - используем \usepackage{color}
+		showspaces=false,            % показывать или нет пробелы специальными отступами
+		showstringspaces=false,      % показывать или нет пробелы в строках
+		showtabs=false,             % показывать или нет табуляцию в строках
+		frame=single,              % рисовать рамку вокруг кода
+		tabsize=2,                 % размер табуляции по умолчанию равен 2 пробелам
+		captionpos=t,              % позиция заголовка вверху [t] или внизу [b] 
+		breaklines=true,           % автоматически переносить строки (да\нет)
+		breakatwhitespace=false, % переносить строки только если есть пробел
+		escapeinside={\%*}{*)}   % если нужно добавить комментарии в коде
+	}
+	
+	% Титульный лист
+	\begin{figure}[h!]
+		\begin{center}
+			{\includegraphics[scale = 0.4]{titul.jpg}}
+			\label{titul}
+		\end{center}
+	\end{figure}
+	
+	\vspace*{15mm} 
+	
+	\huge
+	\begin{center}
+		Дисциплина: <<Моделирование>>
+	\end{center}
+	
+	\begin{center}
+		Лабораторная работа №8
+	\end{center}
+
+	
+	\huge
+	\begin{center}
+		Тема работы:\\
+		<<Моделирование работы кинотеатра на языке GPSS>>
+	\end{center}
+	\vspace*{25mm} 
+	
+	\large
+	\begin{flushright}
+		Студент: Левушкин И. К. \\
+		Группа: ИУ7-72Б \\
+		Преподаватель: Рудаков И. В. \\
+	\end{flushright}
+	
+	\vspace*{25mm}
+	\begin{center}
+		Москва, 2020 г.  
+	\end{center}
+	\thispagestyle{empty}
+	
+	
+	\newpage
+	
+	\section*{Задание}
+	
+	Смоделировать работу кинотеатра. Посетители приходят через 2 входа через интервал времени $8 \pm 2$ минуты, затем осуществляется досмотр в 3 потока за $10 \pm 3$. После чего посетители отправляются на одну из четырех касс с временем обслуживания $11 \pm 3$, $14 \pm 1$,  $16 \pm 3$ и $27 \pm 2$, соответственно. Далее, они отправляются в кинозал, где принимают билеты 2 проверяющих со скоростью обслуживания $4 \pm 1$, соответственно. Во всех случаях посетители стараются занять очередь с минимальным числом людей.
+	
+	Определить максимальное время ожидания в каждой из очередей и их максимальные длины.
+	Количество мест в кинозале равно 150.
+	
+	\newpage
+	
+	\section*{Формализация}
+	
+	\subsection*{Концептуальная модель}
+	
+	Ниже приведена концептуальная модель в терминах СМО.
+	
+	\begin{figure}[h!]
+		\begin{center}
+			{\includegraphics[scale = 0.4]{model.pdf}}
+			\label{ris:model}
+		\end{center}
+		\caption{Концептуальная модель в терминах СМО.}
+	\end{figure}
+	
+	\subsection*{Эндогенные и экзогенные переменные имитационной модели}
+	
+	{\bf Эндогенные переменные} - время проверки посетителя $i$-ым охранником,
+	время оформления билета $j$-ым сотрудником, время проверки билета посетителя $k$-ым билетером.
+	
+	{\bf Экзогенные переменные} - число посетителей, пришедших в кинозал.
+	
+	\newpage
+	
+	\section*{Код программы}
+	
+	Для разработки программы использовалась система GPSS World.
+	
+	Ниже приведены листинги кода программы.
+	
+	\begin{minted}{prolog}
+ENTRANCE_S	STORAGE	3
+TICKETS_S	STORAGE	2
+
+		SIMULATE
+		GENERATE	8,2
+		TRANSFER	,L_ENTRANCE
+		GENERATE	8,2
+
+L_ENTRANCE	QUEUE	ENTRANCE_Q
+		ENTER	ENTRANCE_S
+		DEPART	ENTRANCE_Q
+		ADVANCE	10,3
+		LEAVE	ENTRANCE_S
+
+L_CASHBOX	QUEUE	CASHBOX_Q
+		GATE NU	CASHBOX_0,L_CASHBOX1
+
+L_CASHBOX0 SEIZE	CASHBOX_0
+		DEPART	CASHBOX_Q
+		ADVANCE	11,3
+		RELEASE	CASHBOX_0
+		UNLINK	CASHBOX_LST,L_CASHBOX0,1
+		TRANSFER	,L_TICKETS
+
+L_CASHBOX1 GATE NU	CASHBOX_1,L_CASHBOX2
+		SEIZE	CASHBOX_1
+		DEPART	CASHBOX_Q
+		ADVANCE	14,1
+		RELEASE	CASHBOX_1
+		UNLINK	CASHBOX_LST,L_CASHBOX1,1
+		TRANSFER	,L_TICKETS
+
+L_CASHBOX2 GATE NU	CASHBOX_2,L_CASHBOX3
+		SEIZE	CASHBOX_2
+		DEPART	CASHBOX_Q
+		ADVANCE	16,3
+		RELEASE	CASHBOX_2
+		UNLINK	CASHBOX_LST,L_CASHBOX2,1
+		TRANSFER	,L_TICKETS
+
+L_CASHBOX3 GATE NU	CASHBOX_3,L_WAIT
+		SEIZE	CASHBOX_3
+		DEPART	CASHBOX_Q
+		ADVANCE	27,2
+		RELEASE	CASHBOX_3
+		UNLINK	CASHBOX_LST,L_CASHBOX3,1
+		TRANSFER	,L_TICKETS
+
+L_WAIT	LINK	CASHBOX_LST,FIFO
+
+L_TICKETS	QUEUE	TICKETS_Q
+		ENTER	TICKETS_S
+		DEPART	TICKETS_Q
+		ADVANCE	4,1
+		LEAVE	TICKETS_S
+
+L_TERM	TERMINATE	1
+		START	150
+	\end{minted}
+	
+	\newpage
+	
+	\section*{Результаты работы}
+	
+	Ниже приведен отчет результата работы программы.
+	
+	\begin{figure}[h!]
+		\begin{center}
+			{\includegraphics[scale = 0.6]{1.png}}
+			\label{ris:smo1}
+		\end{center}
+		\caption{СМО кинотеатра.}
+	\end{figure}
+	
+	\newpage
+	
+	\begin{figure}[h!]
+		\begin{center}
+			{\includegraphics[scale = 0.6]{2.png}}
+			\label{ris:smo2}
+		\end{center}
+		\caption{СМО кинотеатра.}
+	\end{figure}
+
+	\begin{figure}[h!]
+		\begin{center}
+			{\includegraphics[scale = 0.6]{3.png}}
+			\label{ris:smo3}
+		\end{center}
+		\caption{СМО кинотеатра.}
+	\end{figure}
+	
+	\section*{Вывод}
+	
+	Проведено имитационное моделирование кинотеатра с использованием событийного метода.
+	
+	В результате проделанной работы была проведена формализация задачи, на основе чего была разработана программа на языке GPSS, реализующая поставленную задачу.
+	
+	Программа позволяла определить максимальное время ожидания в каждой из очередей и их максимальные длины.
+	
+	В ходе работы были изучены основные операторы языка GPSS и получены
+	навыки работы с ним.
+	
+\end{document}
